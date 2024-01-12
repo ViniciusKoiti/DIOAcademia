@@ -27,6 +27,7 @@ public class ClientTest {
         Client client = new Client();
         ClientDTO clientDTO = new ClientDTO();
         when(clientRepository.save(any(Client.class))).thenReturn(client);
+        when()
         ResponseEntity<ClientDTO> savedClient = clientService.createClient(clientDTO);
         assertNotNull(savedClient, "O cliente não foi salvo");
     }
