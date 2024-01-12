@@ -23,5 +23,5 @@ public interface CrudService<DTO, ENT> {
 
     DTO convertEntitytoDTO(ENT entity, Class<DTO> dtoClass);
 
-    ENT convertDTOtoEntiyty(DTO dto, Class<ENT> entClass);
+    ENT convertDTOtoEntity(DTO dto, Class<ENT> entClass);
 }
