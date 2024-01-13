@@ -1,8 +1,11 @@
 package com.dio.springboot.jpa.service.impl;
 
 import com.dio.springboot.jpa.dto.ClientDTO;
+import com.dio.springboot.jpa.dto.ErrorDTO;
 import com.dio.springboot.jpa.entity.Client;
+import com.dio.springboot.jpa.exception.InvalidClientException;
 import com.dio.springboot.jpa.service.ClientService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -10,7 +13,17 @@ import java.util.List;
 public class ClientServiceImpl implements ClientService {
 
     @Override
-    public ResponseEntity<ClientDTO> create(ClientDTO objeto) {
+    public ResponseEntity<ClientDTO> create(ClientDTO clientDTO) {
+        try {
+            if (clientDTO.getId() == 0){
+                throw new InvalidClientException("Client ID should be zero for new clients.");
+            }
+        } catch (InvalidClientException invalidClientException){
+
+        }
+
+
+
         return null;
     }
 
@@ -41,6 +54,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client convertDTOtoEntity(ClientDTO clientDTO, Class<Client> clientClass) {
-        return null;
+        return objectMapper.convertValue(clientDTO, clientClass);
     }
 }

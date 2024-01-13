@@ -2,6 +2,7 @@ package com.dio.springboot.jpa.entity;
 import com.dio.springboot.jpa.dto.ClientDTO;
 import com.dio.springboot.jpa.repository.ClientRepository;
 import com.dio.springboot.jpa.service.ClientService;
+import com.dio.springboot.jpa.service.impl.ClientServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +20,7 @@ public class ClientTest {
     private ClientRepository clientRepository;
 
     @InjectMocks
-    private ClientService clientService;
+    private ClientServiceImpl clientService;
 
 
     @Test
@@ -27,7 +28,7 @@ public class ClientTest {
         Client client = new Client();
         ClientDTO clientDTO = new ClientDTO();
         when(clientRepository.save(any(Client.class))).thenReturn(client);
-        when(clientService.convertDTOtoEntity(any(ClientDTO.class),Client.class)).thenReturn(client);
+        when(clientService.convertDTOtoEntity(any(ClientDTO.class),eq(Client.class))).thenReturn(client);
         ResponseEntity<ClientDTO> savedClient = clientService.create(clientDTO);
         assertNotNull(savedClient, "O cliente não foi salvo");
     }
