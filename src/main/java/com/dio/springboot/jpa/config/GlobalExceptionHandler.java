@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
     }
 
-    @ExceptionHandler(InvalidClientException.class)
+    @ExceptionHandler(ClientNotFound.class)
     public ResponseEntity<ErrorDTO> handleInvalidClientException(ClientNotFound e) {
         return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
     }

@@ -1,9 +1,10 @@
 package com.dio.springboot.jpa.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
-
+@Controller
 public interface CrudController<DTO> {
 
     ResponseEntity<DTO> create(DTO objeto);
