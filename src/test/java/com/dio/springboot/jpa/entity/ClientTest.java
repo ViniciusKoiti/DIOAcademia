@@ -1,5 +1,6 @@
 package com.dio.springboot.jpa.entity;
 import com.dio.springboot.jpa.dto.ClientDTO;
+import com.dio.springboot.jpa.exception.client.ClientNotFound;
 import com.dio.springboot.jpa.exception.client.InvalidClientException;
 import com.dio.springboot.jpa.repository.ClientRepository;
 import com.dio.springboot.jpa.service.ClientService;
@@ -12,6 +13,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -46,5 +51,65 @@ public class ClientTest {
         assertThrows(InvalidClientException.class, () -> clientService.create(clientDTOComId));
     }
 
+    @Test
+    void testGetAllItensClient(){
+        List<Client> clients = List.of(
+                new Client(1, "Erika", "Erika Berlin"),
+                new Client(2, "Hawany", "Hawany Gomes"),
+                new Client(3, "48888888888", "Vinicius Koiti")
+        );
+        when(clientRepository.findAll()).thenReturn(clients);
+        ResponseEntity<List<ClientDTO>> responseListAllClient = clientService.getAllItems();
+        assertNotNull(responseListAllClient, "A resposta não deve ser nula");
+        assertEquals(HttpStatus.OK, responseListAllClient.getStatusCode(), "O status da resposta deve ser OK");
+        assertNotNull(responseListAllClient.getBody(), "O corpo da resposta não deve ser nulo");
+        assertEquals(3, responseListAllClient.getBody().size(), "O tamanho da lista de ClientDTO deve ser 3");
+    }
+
+    @Test
+    void testGetByIdClient(){
+        long id = 1L;
+        Client client = new Client(id);
+        ClientDTO clientDTO = new ClientDTO(id);
+        when(clientRepository.findById(id)).thenReturn(Optional.of(client));
+        ResponseEntity<ClientDTO> response = clientService.getById(id);
+        assertNotNull(response, "A resposta não deve ser nula");
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "O status da resposta deve ser OK");
+        assertEquals(client.getId(), clientDTO.getId(), "Devemos encontrar o mesmo Client");
+    }
+
+    @Test
+    void testGetByIdClientInvalid(){
+        long id = 1L;
+        assertThrows(ClientNotFound.class, () -> clientService.getById(id));
+    }
+
+    @Test
+    void testUpdateClient(){
+        long id = 1L;
+        Client client = new Client(id);
+        ClientDTO clientDTO = new ClientDTO(id);
+        when(clientService.convertDTOtoEntity(clientDTO,Client.class)).thenReturn(client);
+        ResponseEntity<ClientDTO> updatedClient = clientService.update(clientDTO);
+        assertNotNull(updatedClient, "O cliente atualizado");
+        assertEquals(HttpStatus.OK, updatedClient.getStatusCode(), "Status deve ser OK");
+    }
+
+    @Test
+    void testUpdateClientInvalid() {
+        ClientDTO clientDTOSemId = new ClientDTO();
+        assertThrows(InvalidClientException.class, () -> clientService.update(clientDTOSemId));
+    }
+
+    @Test
+    void testDeleteClient(){
+        long id = 1L;
+        Client client = new Client(id);
+        ClientDTO clientDTO = new ClientDTO(id);
+        when(clientRepository.findById(id)).thenReturn(Optional.of(client));
+        ResponseEntity<ClientDTO> response = clientService.delete(id);
+        assertNotNull(response, "O cliente atualizado");
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status deve ser OK");
+    }
 
 }
