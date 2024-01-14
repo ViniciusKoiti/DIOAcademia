@@ -1,4 +1,4 @@
-package com.dio.springboot.jpa.exception;
+package com.dio.springboot.jpa.exception.client;
 
 public class InvalidClientException extends RuntimeException {
 

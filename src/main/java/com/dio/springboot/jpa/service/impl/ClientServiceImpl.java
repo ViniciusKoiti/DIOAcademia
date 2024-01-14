@@ -2,7 +2,8 @@ package com.dio.springboot.jpa.service.impl;
 
 import com.dio.springboot.jpa.dto.ClientDTO;
 import com.dio.springboot.jpa.entity.Client;
-import com.dio.springboot.jpa.exception.InvalidClientException;
+import com.dio.springboot.jpa.exception.client.ClientNotFound;
+import com.dio.springboot.jpa.exception.client.InvalidClientException;
 import com.dio.springboot.jpa.repository.ClientRepository;
 import com.dio.springboot.jpa.service.ClientService;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ResponseEntity<ClientDTO> create(ClientDTO clientDTO) {
         if (clientDTO.getId() != 0){
-            throw new InvalidClientException("Client ID should not be zero for new clients.");
+            throw new InvalidClientException("Não informe o id para criar o usuário");
         }
         Client client = convertDTOtoEntity(clientDTO, Client.class);
         clientRepository.save(client);
@@ -45,25 +46,29 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ResponseEntity<ClientDTO> getById(long id) {
         Optional<Client> clientOptional = clientRepository.findById(id);
-        if(clientOptional.isEmpty()){
-            // TODO MELHORAR NOME A IMPLEMENTAÇÃO DO HANDLER
-            throw new InvalidClientException("Não encontrado o cliente com id");
-        }
+        checkClientExists(clientOptional,id);
         return new ResponseEntity<>
                 (convertEntitytoDTO(clientOptional.get()
                         ,ClientDTO.class), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ClientDTO> update(ClientDTO objeto) {
+    public ResponseEntity<ClientDTO> update(ClientDTO clientDTO) {
+        if (clientDTO.getId() == 0){
+            throw new InvalidClientException("Informe o id para atualizar o usuário");
+        }
+        Client client = convertDTOtoEntity(clientDTO, Client.class);
+        clientRepository.save(client);
 
-        return null;
+        return new ResponseEntity<>(clientDTO, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ClientDTO> delete(long id) {
+        Optional<Client> clientOptional = clientRepository.findById(id);
+        checkClientExists(clientOptional,id);
         clientRepository.deleteById(id);
-        return null;
+        return new ResponseEntity<>(convertEntitytoDTO(clientOptional.get(),ClientDTO.class), HttpStatus.OK);
     }
 
     @Override
@@ -74,5 +79,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client convertDTOtoEntity(ClientDTO clientDTO, Class<Client> clientClass) {
         return objectMapper.convertValue(clientDTO, clientClass);
+    }
+
+    public void checkClientExists(Optional<Client> clientOptional, Long clientId) {
+        if (clientOptional.isEmpty()) {
+            throw new ClientNotFound("Não encontrado o cliente com id " + clientId);
+        }
     }
 }
