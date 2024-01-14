@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface CrudService<DTO, ENT> {
 
-     static final ObjectMapper objectMapper = new ObjectMapper();
-
     ResponseEntity<DTO> create(DTO objeto);
 
     ResponseEntity<List<DTO>> getAllItems();

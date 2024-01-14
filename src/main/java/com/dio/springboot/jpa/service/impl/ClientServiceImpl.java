@@ -6,9 +6,9 @@ import com.dio.springboot.jpa.exception.client.ClientNotFound;
 import com.dio.springboot.jpa.exception.client.InvalidClientException;
 import com.dio.springboot.jpa.repository.ClientRepository;
 import com.dio.springboot.jpa.service.ClientService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +18,11 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
 
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    private final ObjectMapper objectMapper;
+
+    public ClientServiceImpl(ClientRepository clientRepository, ObjectMapper objectMapper) {
         this.clientRepository = clientRepository;
+        this.objectMapper = objectMapper;
     }
 
 

@@ -11,6 +11,10 @@ public class PersonDTO {
     public PersonDTO() {
     }
 
+    public PersonDTO(long id) {
+        this.id = id;
+    }
+
     public PersonDTO(long id, String cpf, String name) {
         this.id = id;
         this.cpf = cpf;
