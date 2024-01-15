@@ -1,6 +1,8 @@
 package com.dio.springboot.jpa.entity;
 
+import com.dio.springboot.jpa.dto.ClientDTO;
 import com.dio.springboot.jpa.dto.ModuleDTO;
+import com.dio.springboot.jpa.exception.client.ClientNotFound;
 import com.dio.springboot.jpa.exception.client.InvalidClientException;
 import com.dio.springboot.jpa.exception.module.InvalidModuleException;
 import com.dio.springboot.jpa.repository.ModuleRepository;
@@ -13,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -43,5 +47,23 @@ public class ModuleTest {
     void testCreatedModule(){
         ModuleDTO moduleDTO = new ModuleDTO(1L);
         assertThrows(InvalidModuleException.class, () -> moduleService.create(moduleDTO));
+    }
+
+    @Test
+    void testGetByIdClient(){
+        long id = 1L;
+        Module module = new Module(id);
+        ModuleDTO moduleDTO = new ModuleDTO(id);
+        when(moduleRepository.findById(id)).thenReturn(Optional.of(module));
+        ResponseEntity<ModuleDTO> response = moduleService.getById(id);
+        assertNotNull(response, "A resposta não deve ser nula");
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "O status da resposta deve ser OK");
+        assertEquals(module.getId(), moduleDTO.getId(), "Devemos encontrar o mesmo Client");
+    }
+
+    @Test
+    void testGetByIdClientInvalid(){
+        long id = 1L;
+        assertThrows(ClientNotFound.class, () -> moduleService.getById(id));
     }
 }

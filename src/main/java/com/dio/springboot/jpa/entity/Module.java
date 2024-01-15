@@ -8,6 +8,13 @@ public class Module {
     @Id
     private Long id;
 
+    public Module() {
+    }
+
+    public Module(Long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
