@@ -1,6 +1,8 @@
 package com.dio.springboot.jpa.entity;
 
 import com.dio.springboot.jpa.dto.ModuleDTO;
+import com.dio.springboot.jpa.exception.client.InvalidClientException;
+import com.dio.springboot.jpa.exception.module.InvalidModuleException;
 import com.dio.springboot.jpa.repository.ModuleRepository;
 import com.dio.springboot.jpa.service.ModuleService;
 import com.dio.springboot.jpa.service.impl.ModuleServiceImpl;
@@ -12,8 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,5 +37,11 @@ public class ModuleTest {
         ResponseEntity<ModuleDTO> savedClient = moduleService.create(moduleDTO);
         assertNotNull(savedClient, "O modulo salvo");
         assertEquals(HttpStatus.CREATED, savedClient.getStatusCode(), "Status deve ser CREATED");
+    }
+
+    @Test
+    void testCreatedModule(){
+        ModuleDTO moduleDTO = new ModuleDTO(1L);
+        assertThrows(InvalidModuleException.class, () -> moduleService.create(moduleDTO));
     }
 }
