@@ -1,8 +1,9 @@
 package com.dio.springboot.jpa.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity(name = "CLIENT")
 public class Client {
@@ -15,6 +16,15 @@ public class Client {
 
     @Column(name = "NAME")
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "CLIENTE_MODULO",
+            joinColumns = @JoinColumn(name = "CLIENTE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "MODULO_ID")
+    )
+    @NotNull
+    private Set<Module> modules;
 
     public Client() {
     }

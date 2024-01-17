@@ -6,8 +6,8 @@ public class ModuleDTO {
 
     public ModuleDTO(){}
 
-    public ModuleDTO(long l) {
-        this.id = l;
+    public ModuleDTO(long id) {
+        this.id = id;
     }
 
     public long getId() {

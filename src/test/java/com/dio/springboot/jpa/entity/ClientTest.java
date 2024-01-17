@@ -1,5 +1,6 @@
 package com.dio.springboot.jpa.entity;
 import com.dio.springboot.jpa.dto.ClientDTO;
+import com.dio.springboot.jpa.dto.ModuleDTO;
 import com.dio.springboot.jpa.exception.client.ClientNotFound;
 import com.dio.springboot.jpa.exception.client.InvalidClientException;
 import com.dio.springboot.jpa.repository.ClientRepository;
@@ -14,9 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,13 +31,13 @@ public class ClientTest {
 
     @InjectMocks
     private ClientServiceImpl clientService;
-
-
     @Test
     void testCreateClient(){
         long id = 1L;
+        ModuleDTO moduleDTO = new ModuleDTO(id);
+        Set<ModuleDTO> moduleDTOSet = new HashSet<>();
         Client client = new Client();
-        ClientDTO clientDTO = new ClientDTO();
+        ClientDTO clientDTO = new ClientDTO(moduleDTOSet);
         when(clientService.convertDTOtoEntity(clientDTO,Client.class)).thenReturn(client);
         ResponseEntity<ClientDTO> savedClient = clientService.create(clientDTO);
         assertNotNull(savedClient, "O cliente salvo");
@@ -47,7 +46,10 @@ public class ClientTest {
 
     @Test
     void testCreateClientInvalid() {
-        ClientDTO clientDTOComId = new ClientDTO(1L);
+        long id = 1L;
+        ModuleDTO moduleDTO = new ModuleDTO(id);
+        Set<ModuleDTO> moduleDTOSet = new HashSet<>();
+        ClientDTO clientDTOComId = new ClientDTO(id,moduleDTOSet);
         assertThrows(InvalidClientException.class, () -> clientService.create(clientDTOComId));
     }
 
@@ -69,8 +71,10 @@ public class ClientTest {
     @Test
     void testGetByIdClient(){
         long id = 1L;
+        ModuleDTO moduleDTO = new ModuleDTO(id);
+        Set<ModuleDTO> moduleDTOSet = new HashSet<>();
         Client client = new Client(id);
-        ClientDTO clientDTO = new ClientDTO(id);
+        ClientDTO clientDTO = new ClientDTO(moduleDTOSet);
         when(clientRepository.findById(id)).thenReturn(Optional.of(client));
         ResponseEntity<ClientDTO> response = clientService.getById(id);
         assertNotNull(response, "A resposta não deve ser nula");
@@ -87,8 +91,10 @@ public class ClientTest {
     @Test
     void testUpdateClient(){
         long id = 1L;
+        ModuleDTO moduleDTO = new ModuleDTO(id);
+        Set<ModuleDTO> moduleDTOSet = new HashSet<>();
         Client client = new Client(id);
-        ClientDTO clientDTO = new ClientDTO(id);
+        ClientDTO clientDTO = new ClientDTO(moduleDTOSet);
         when(clientService.convertDTOtoEntity(clientDTO,Client.class)).thenReturn(client);
         ResponseEntity<ClientDTO> updatedClient = clientService.update(clientDTO);
         assertNotNull(updatedClient, "O cliente atualizado");
@@ -97,15 +103,20 @@ public class ClientTest {
 
     @Test
     void testUpdateClientInvalid() {
-        ClientDTO clientDTOSemId = new ClientDTO();
+        ModuleDTO moduleDTO = new ModuleDTO(1L);
+        Set<ModuleDTO> moduleDTOSet = new HashSet<>();
+        ClientDTO clientDTOSemId = new ClientDTO(moduleDTOSet);
         assertThrows(InvalidClientException.class, () -> clientService.update(clientDTOSemId));
     }
 
     @Test
     void testDeleteClient(){
         long id = 1L;
+        ModuleDTO moduleDTO = new ModuleDTO(id);
+        Set<ModuleDTO> moduleDTOSet = new HashSet<>();
+
         Client client = new Client(id);
-        ClientDTO clientDTO = new ClientDTO(id);
+        ClientDTO clientDTO = new ClientDTO(id,moduleDTOSet);
         when(clientRepository.findById(id)).thenReturn(Optional.of(client));
         ResponseEntity<ClientDTO> response = clientService.delete(id);
         assertNotNull(response, "O cliente atualizado");
