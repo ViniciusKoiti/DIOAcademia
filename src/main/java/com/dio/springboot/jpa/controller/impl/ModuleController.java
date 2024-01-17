@@ -1,33 +1,44 @@
 package com.dio.springboot.jpa.controller.impl;
 
 import com.dio.springboot.jpa.controller.CrudController;
+import com.dio.springboot.jpa.dto.ModuleDTO;
+import com.dio.springboot.jpa.service.ModuleService;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public class ModuleController implements CrudController<Module> {
+
+public class ModuleController implements CrudController<ModuleDTO> {
+
+    private final ModuleService moduleService;
+
+    public ModuleController(ModuleService moduleService) {
+        this.moduleService = moduleService;
+    }
+
+
     @Override
-    public ResponseEntity<Module> create(Module objeto) {
-        return null;
+    public ResponseEntity<ModuleDTO> create(ModuleDTO objeto) {
+        return moduleService.create(objeto);
     }
 
     @Override
-    public ResponseEntity<List<Module>> getAllItems() {
-        return null;
+    public ResponseEntity<List<ModuleDTO>> getAllItems() {
+        return moduleService.getAllItems();
     }
 
     @Override
-    public ResponseEntity<Module> getById(long id) {
-        return null;
+    public ResponseEntity<ModuleDTO> getById(long id) {
+        return moduleService.getById(id);
     }
 
     @Override
-    public ResponseEntity<Module> update(Module objeto) {
-        return null;
+    public ResponseEntity<ModuleDTO> update(ModuleDTO objeto) {
+        return moduleService.update(objeto);
     }
 
     @Override
-    public ResponseEntity<Module> delete(long id) {
-        return null;
+    public ResponseEntity<ModuleDTO> delete(long id) {
+        return moduleService.getById(id);
     }
 }
