@@ -1,5 +1,6 @@
 package com.dio.springboot.jpa.entity;
 
+import com.dio.springboot.jpa.exception.client.ClientWithoutModule;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ public class Client {
     private long id;
 
     @Column(name = "CPF")
+    @NotNull
     private String cpf;
 
     @Column(name = "NAME")
@@ -27,16 +29,22 @@ public class Client {
     private Set<Module> modules;
 
     public Client() {
+        throw new ClientWithoutModule("Cliente não deve ser criado sem módulo");
     }
 
     public Client(long id) {
-        this.id = id;
+        throw new ClientWithoutModule("Cliente não deve ser criado sem módulo");
     }
 
     public Client(long id, String cpf, String name) {
+        throw new ClientWithoutModule("Cliente não deve ser criado sem módulo");
+    }
+
+    public Client(long id, String cpf, String name, Set<Module> modules) {
         this.id = id;
         this.cpf = cpf;
         this.name = name;
+        this.modules = modules;
     }
 
     public String getCpf() {
@@ -62,4 +70,18 @@ public class Client {
     public Long getId() {
         return id;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Set<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(Set<Module> modules) {
+        this.modules = modules;
+    }
+
+
 }
