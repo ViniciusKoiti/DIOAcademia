@@ -40,11 +40,20 @@ public class Client {
         throw new ClientWithoutModule("Cliente não deve ser criado sem módulo");
     }
 
+    public Client(Set<Module> modules) {
+        this.modules = modules;
+    }
+
     public Client(long id, String cpf, String name, Set<Module> modules) {
         this.id = id;
         this.cpf = cpf;
         this.name = name;
         this.modules = modules;
+    }
+
+    public Client(long id, Set<Module> moduleSet) {
+        this.id = id;
+        this.modules = moduleSet;
     }
 
     public String getCpf() {

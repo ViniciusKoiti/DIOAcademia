@@ -35,8 +35,10 @@ public class ClientTest {
     void testCreateClient(){
         long id = 1L;
         ModuleDTO moduleDTO = new ModuleDTO(id);
+        Module module = new Module(id);
         Set<ModuleDTO> moduleDTOSet = new HashSet<>();
-        Client client = new Client();
+        Set<Module> moduleSet = new HashSet<>();
+        Client client = new Client(moduleSet);
         ClientDTO clientDTO = new ClientDTO(moduleDTOSet);
         when(clientService.convertDTOtoEntity(clientDTO,Client.class)).thenReturn(client);
         ResponseEntity<ClientDTO> savedClient = clientService.create(clientDTO);
@@ -55,10 +57,11 @@ public class ClientTest {
 
     @Test
     void testGetAllItensClient(){
+        Set<Module> moduleSet = new HashSet<>();
         List<Client> clients = List.of(
-                new Client(1, "Erika", "Erika Berlin"),
-                new Client(2, "Hawany", "Hawany Gomes"),
-                new Client(3, "48888888888", "Vinicius Koiti")
+                new Client(1, "Erika", "Erika Berlin",moduleSet),
+                new Client(2, "Hawany", "Hawany Gomes",moduleSet),
+                new Client(3, "48888888888", "Vinicius Koiti",moduleSet)
         );
         when(clientRepository.findAll()).thenReturn(clients);
         ResponseEntity<List<ClientDTO>> responseListAllClient = clientService.getAllItems();
@@ -73,7 +76,8 @@ public class ClientTest {
         long id = 1L;
         ModuleDTO moduleDTO = new ModuleDTO(id);
         Set<ModuleDTO> moduleDTOSet = new HashSet<>();
-        Client client = new Client(id);
+        Set<Module> moduleSet = new HashSet<>();
+        Client client = new Client(id,moduleSet);
         ClientDTO clientDTO = new ClientDTO(moduleDTOSet);
         when(clientRepository.findById(id)).thenReturn(Optional.of(client));
         ResponseEntity<ClientDTO> response = clientService.getById(id);
@@ -93,7 +97,8 @@ public class ClientTest {
         long id = 1L;
         ModuleDTO moduleDTO = new ModuleDTO(id);
         Set<ModuleDTO> moduleDTOSet = new HashSet<>();
-        Client client = new Client(id);
+        Set<Module> moduleSet = new HashSet<>();
+        Client client = new Client(id,moduleSet);
         ClientDTO clientDTO = new ClientDTO(moduleDTOSet);
         when(clientService.convertDTOtoEntity(clientDTO,Client.class)).thenReturn(client);
         ResponseEntity<ClientDTO> updatedClient = clientService.update(clientDTO);
@@ -114,8 +119,9 @@ public class ClientTest {
         long id = 1L;
         ModuleDTO moduleDTO = new ModuleDTO(id);
         Set<ModuleDTO> moduleDTOSet = new HashSet<>();
+        Set<Module> moduleSet = new HashSet<>();
 
-        Client client = new Client(id);
+        Client client = new Client(id,moduleSet);
         ClientDTO clientDTO = new ClientDTO(id,moduleDTOSet);
         when(clientRepository.findById(id)).thenReturn(Optional.of(client));
         ResponseEntity<ClientDTO> response = clientService.delete(id);
