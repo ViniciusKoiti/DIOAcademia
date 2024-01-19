@@ -21,4 +21,8 @@ public class ClientDTO extends PersonDTO {
         super(id, cpf, name);
         this.moduleDTOS = moduleDTOS;
     }
+
+    public Set<ModuleDTO> getModuleDTOS() {
+        return moduleDTOS;
+    }
 }

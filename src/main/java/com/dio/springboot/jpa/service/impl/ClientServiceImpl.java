@@ -1,6 +1,7 @@
 package com.dio.springboot.jpa.service.impl;
 
 import com.dio.springboot.jpa.dto.ClientDTO;
+import com.dio.springboot.jpa.dto.ResponseDTO;
 import com.dio.springboot.jpa.entity.Client;
 import com.dio.springboot.jpa.exception.client.ClientNotFound;
 import com.dio.springboot.jpa.exception.client.InvalidClientException;
@@ -10,9 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ClientServiceImpl implements ClientService {
 
@@ -87,5 +90,22 @@ public class ClientServiceImpl implements ClientService {
         if (clientOptional.isEmpty()) {
             throw new ClientNotFound("Não encontrado o cliente com id " + clientId);
         }
+    }
+
+    @Override
+    public ResponseEntity<ResponseDTO<Boolean>> clientEnterInGym(ClientDTO clientDTO) {
+
+        Boolean result = clientDTO.getModuleDTOS().stream().flatMap((moduleDTO -> {
+            if (moduleDTO.isFreeAdmission() && moduleDTO.getVencimentDate().isAfter(ZonedDateTime.now().plusDays(7))) {
+                return Stream.of(new ResponseDTO<>(true, "Módulo válido"));
+            }
+            return Stream.empty();
+
+        })).filter(ResponseDTO::getData).collect(Collectors.toList()).isEmpty();
+
+
+        return ResponseEntity.ok(new ResponseDTO(result,"Usuario pode entrar mas eu estou com dificuldade lidar com regra de negocio"));
+
+
     }
 }
