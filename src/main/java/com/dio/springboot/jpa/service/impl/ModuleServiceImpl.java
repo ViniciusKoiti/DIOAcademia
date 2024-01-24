@@ -6,6 +6,7 @@ import com.dio.springboot.jpa.entity.Client;
 import com.dio.springboot.jpa.entity.Module;
 import com.dio.springboot.jpa.exception.client.ClientNotFound;
 import com.dio.springboot.jpa.exception.client.InvalidClientException;
+import com.dio.springboot.jpa.exception.module.InvalidModuleException;
 import com.dio.springboot.jpa.repository.ModuleRepository;
 import com.dio.springboot.jpa.service.ModuleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +32,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public ResponseEntity<ModuleDTO> create(ModuleDTO moduleDTO) {
         if(moduleDTO.getId() != 0){
-            throw new InvalidClientException("Não informe o id para criar o usuário");
+            throw new InvalidModuleException("Não informe o id para criar o usuário");
         }
 
         Module module = convertDTOtoEntity(moduleDTO, Module.class);
