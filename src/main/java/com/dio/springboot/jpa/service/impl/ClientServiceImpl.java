@@ -96,15 +96,14 @@ public class ClientServiceImpl implements ClientService {
     public ResponseEntity<ResponseDTO<Boolean>> clientEnterInGym(ClientDTO clientDTO) {
 
         Boolean result = clientDTO.getModuleDTOS().stream().flatMap((moduleDTO -> {
-            if (moduleDTO.isFreeAdmission() && moduleDTO.getVencimentDate().isAfter(ZonedDateTime.now().plusDays(7))) {
+            if (moduleDTO.isFreeAdmission() && moduleDTO.getVencimentDate().isBefore(ZonedDateTime.now().plusDays(7))) {
                 return Stream.of(new ResponseDTO<>(true, "Módulo válido"));
             }
             return Stream.empty();
+        })).noneMatch(ResponseDTO::getData);
 
-        })).filter(ResponseDTO::getData).collect(Collectors.toList()).isEmpty();
 
-
-        return ResponseEntity.ok(new ResponseDTO(result,"Usuario pode entrar mas eu estou com dificuldade lidar com regra de negocio"));
+        return ResponseEntity.ok(new ResponseDTO<>(result,"Usuario pode entrar mas eu estou com dificuldade lidar com regra de negocio"));
 
 
     }

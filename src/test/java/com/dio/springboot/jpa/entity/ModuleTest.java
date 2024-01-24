@@ -8,6 +8,7 @@ import com.dio.springboot.jpa.exception.module.InvalidModuleException;
 import com.dio.springboot.jpa.repository.ModuleRepository;
 import com.dio.springboot.jpa.service.ModuleService;
 import com.dio.springboot.jpa.service.impl.ModuleServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,9 @@ public class ModuleTest {
 
     @Mock
     private ModuleRepository moduleRepository;
+
+    @Mock
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private ModuleServiceImpl moduleService;
