@@ -1,12 +1,9 @@
 package com.dio.springboot.jpa.entity;
 
-import com.dio.springboot.jpa.dto.ClientDTO;
 import com.dio.springboot.jpa.dto.ModuleDTO;
 import com.dio.springboot.jpa.exception.client.ClientNotFound;
-import com.dio.springboot.jpa.exception.client.InvalidClientException;
 import com.dio.springboot.jpa.exception.module.InvalidModuleException;
 import com.dio.springboot.jpa.repository.ModuleRepository;
-import com.dio.springboot.jpa.service.ModuleService;
 import com.dio.springboot.jpa.service.impl.ModuleServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -38,7 +35,6 @@ public class ModuleTest {
 
     @Test
     void testCreateModule(){
-        long id = 1L;
         Module module = new Module();
         ModuleDTO moduleDTO = new ModuleDTO();
         when(moduleService.convertDTOtoEntity(moduleDTO,Module.class)).thenReturn(module);

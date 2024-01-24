@@ -1,8 +1,6 @@
 package com.dio.springboot.jpa.service.impl;
 
-import com.dio.springboot.jpa.dto.ClientDTO;
 import com.dio.springboot.jpa.dto.ModuleDTO;
-import com.dio.springboot.jpa.entity.Client;
 import com.dio.springboot.jpa.entity.Module;
 import com.dio.springboot.jpa.exception.client.ClientNotFound;
 import com.dio.springboot.jpa.exception.client.InvalidClientException;
