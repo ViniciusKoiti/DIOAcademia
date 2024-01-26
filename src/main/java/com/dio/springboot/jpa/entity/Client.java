@@ -7,17 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity(name = "CLIENT")
-public class Client {
-
-    @Id
-    private long id;
-
-    @Column(name = "CPF")
-    @NotNull
-    private String cpf;
-
-    @Column(name = "NAME")
-    private String name;
+public class Client extends Person {
 
     @ManyToMany
     @JoinTable(
@@ -27,6 +17,8 @@ public class Client {
     )
     @NotNull
     private Set<Module> modules;
+    @Id
+    private Long id;
 
     public Client() {
         throw new ClientWithoutModule("Cliente não deve ser criado sem módulo");
@@ -46,42 +38,12 @@ public class Client {
 
     public Client(long id, String cpf, String name, Set<Module> modules) {
         this.id = id;
-        this.cpf = cpf;
-        this.name = name;
         this.modules = modules;
     }
 
     public Client(long id, Set<Module> moduleSet) {
         this.id = id;
         this.modules = moduleSet;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Set<Module> getModules() {
@@ -93,4 +55,11 @@ public class Client {
     }
 
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
