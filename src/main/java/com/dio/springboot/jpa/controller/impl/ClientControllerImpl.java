@@ -3,17 +3,16 @@ package com.dio.springboot.jpa.controller.impl;
 import com.dio.springboot.jpa.controller.CrudController;
 import com.dio.springboot.jpa.dto.ClientDTO;
 import com.dio.springboot.jpa.service.ClientService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public class ClientController implements CrudController<ClientDTO> {
+public class ClientControllerImpl implements CrudController<ClientDTO> {
 
     private final ClientService clientService;
 
 
-    public ClientController(ClientService clientService) {
+    public ClientControllerImpl(ClientService clientService) {
         this.clientService = clientService;
     }
 

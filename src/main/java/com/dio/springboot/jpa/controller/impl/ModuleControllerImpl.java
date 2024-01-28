@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 
-public class ModuleController implements CrudController<ModuleDTO> {
+public class ModuleControllerImpl implements CrudController<ModuleDTO> {
 
     private final ModuleService moduleService;
 
-    public ModuleController(ModuleService moduleService) {
+    public ModuleControllerImpl(ModuleService moduleService) {
         this.moduleService = moduleService;
     }
 
