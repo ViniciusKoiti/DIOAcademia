@@ -1,7 +1,6 @@
 package com.dio.springboot.jpa.dto;
 
 import com.dio.springboot.jpa.entity.UserPersonDetails;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
