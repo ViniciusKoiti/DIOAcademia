@@ -18,4 +18,6 @@ public class UserPersonDetails extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
+
+
 }

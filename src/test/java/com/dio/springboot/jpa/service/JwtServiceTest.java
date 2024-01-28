@@ -2,6 +2,7 @@ package com.dio.springboot.jpa.service;
 
 import com.dio.springboot.jpa.entity.UserPerson;
 import com.dio.springboot.jpa.entity.UserPersonDetails;
+import com.dio.springboot.jpa.repository.UserPersonRepository;
 import com.dio.springboot.jpa.service.impl.JwtServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,9 +15,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collections;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtServiceTest {
@@ -24,10 +26,14 @@ public class JwtServiceTest {
     @Mock
     private UserPersonDetailsService userPersonDetailsService;
 
+    @Mock
+    private UserPersonRepository userPersonRepository;
+
     @InjectMocks
     private JwtServiceImpl jwtService;
 
     private UserPersonDetails userDetails;
+    private String token;
 
     @BeforeEach
     void setUp() {
@@ -36,6 +42,7 @@ public class JwtServiceTest {
                 "password",
                 Collections.singletonList(new SimpleGrantedAuthority("ADMIN")));
 
+        token = jwtService.generateToken(userDetails);
     }
     @Test
     void testGenerateToken() {
@@ -43,4 +50,12 @@ public class JwtServiceTest {
         assertNotNull(token);
         assertTrue(jwtService.validateToken(token, userDetails));
     }
+
+    @Test
+    void testExtractUsername() {
+        assertEquals("testUser", jwtService.extractUsername(token));
+    }
+
+
+
 }
